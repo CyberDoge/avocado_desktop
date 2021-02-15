@@ -21,11 +21,4 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-.idea/.gitignore
-.idea/avacado_desktop.iml
-.idea/codeStyles/
-.idea/cssxfire.xml
-.idea/inspectionProfiles/
-.idea/misc.xml
-.idea/modules.xml
-.idea/vcs.xml
+.idea/**
