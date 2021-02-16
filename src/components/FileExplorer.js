@@ -1,29 +1,24 @@
-import React from "react"
-import { message, Upload } from "antd"
-import { observer } from "mobx-react-lite"
-import { InboxOutlined } from "@ant-design/icons"
+import React, {useContext} from "react"
+import {Upload} from "antd"
+import {observer} from "mobx-react-lite"
+import {InboxOutlined} from "@ant-design/icons"
 import styles from "./FileExplorer.module.sass"
+import {StoreContext} from "../context/storeContext";
 
 const FileExplorer = observer(() => {
-  const props = {
-    name: "file",
-    multiple: true,
-    onChange(info) {
-      const { status } = info.file
-      if (status !== "uploading") {
-        console.log(info.file, info.fileList)
-      }
-      if (status === "done") {
-        message.success(`${info.file.name} file uploaded successfully.`)
-      } else if (status === "error") {
-        message.error(`${info.file.name} file upload failed.`)
-      }
-    },
+  const {imgDataStore} = useContext(StoreContext);
+  const onChange = (info) => {
+    const {status} = info.file
+    if (status === "done") {
+      imgDataStore.addImage({src: `atom:/${info.file.originFileObj.path}`})
+    }
   }
   return (
-    <Upload.Dragger {...props}>
+    <Upload.Dragger directory customRequest={({onSuccess}) => {
+      onSuccess()
+    }} multiple onChange={onChange}>
       <p>
-        <InboxOutlined className={styles.icon} />
+        <InboxOutlined className={styles.icon}/>
       </p>
       <p className="ant-upload-text">
         Click or drag file to this area to upload
