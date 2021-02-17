@@ -20,7 +20,7 @@ function createWindow() {
   )
   mainWindow.on("closed", () => (mainWindow = null))
   electron.protocol.registerFileProtocol('file', (request, callback) => {
-    const pathname = request.url.replace('file:///', '');
+    const pathname = decodeURI(request.url.replace('file:///', ''))
     callback(pathname);
   });
 }
