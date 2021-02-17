@@ -10,7 +10,7 @@ const FileExplorer = observer(() => {
   const onChange = (info) => {
     const {status} = info.file
     if (status === "done") {
-      imgDataStore.addImage({src: `atom:/${info.file.originFileObj.path}`})
+      imgDataStore.addImage({src: `file://${info.file.originFileObj.path}`})
     }
   }
   return (

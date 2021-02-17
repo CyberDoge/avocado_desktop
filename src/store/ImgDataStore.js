@@ -1,14 +1,17 @@
-import {makeAutoObservable} from "mobx";
+import {action, makeAutoObservable, observable} from "mobx";
 
 class ImgDataStore {
   constructor() {
-    makeAutoObservable(this)
     this.images = []
+    makeAutoObservable(this, {
+      images: observable,
+      addImage: action,
+      foo: observable
+    })
   }
 
-
   addImage(image) {
-    this.images = image
+    this.images.push(image)
   }
 }
 

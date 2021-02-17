@@ -9,17 +9,19 @@ let mainWindow
 function createWindow() {
   const image = nativeImage.createFromPath("public/logo.png")
   image.setTemplateImage(true)
-  mainWindow = new BrowserWindow({fullscreen: true, icon: image})
+  mainWindow = new BrowserWindow({fullscreen: true, icon: image,  webPreferences: {
+    // God, forgive me
+      webSecurity: false
+    }})
   mainWindow.loadURL(
     isDev
       ? "http://localhost:3000"
       : `file://${path.join(__dirname, "../build/index.html")}`
   )
   mainWindow.on("closed", () => (mainWindow = null))
-  electron.protocol.registerFileProtocol('atom', (request, callback) => {
-    console.log(request.url)
-    const url = request.url.substr(7)
-    callback({path: url})
+  electron.protocol.registerFileProtocol('file', (request, callback) => {
+    const pathname = request.url.replace('file:///', '');
+    callback(pathname);
   });
 }
 
