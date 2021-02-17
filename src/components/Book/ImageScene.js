@@ -1,7 +1,8 @@
 import React from 'react';
-const ImageScene = ({imgSrc, imgAlt}) => {
+
+const ImageScene = (props) => {
   return (
-    <img src={imgSrc} alt={imgAlt}/>
+    <img {...props}/>
   );
 };
 

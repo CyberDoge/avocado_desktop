@@ -1,11 +1,14 @@
 import {makeAutoObservable} from "mobx";
-import ImgDataStore from "./ImgDataStore";
+import BookStore from "./BookStore";
+import React from "react"
 
 class RootStore {
   constructor() {
+    this.bookStore = new BookStore()
     makeAutoObservable(this)
-    this.imgDataStore = new ImgDataStore()
   }
 }
+
+export const StoreContext = React.createContext({});
 
 export default RootStore

@@ -3,18 +3,30 @@ import {Upload} from "antd"
 import {observer} from "mobx-react-lite"
 import {InboxOutlined} from "@ant-design/icons"
 import styles from "./FileExplorer.module.sass"
-import {StoreContext} from "../context/storeContext";
+import {StoreContext} from "../store";
+import samePathBegin from "../utils/samePathBegin";
 
 const FileExplorer = observer(() => {
-  const {imgDataStore} = useContext(StoreContext);
+  const {bookStore} = useContext(StoreContext);
+  let folder = null
+  const filePaths = []
+  // todo corner case if drag and drop folder with files macrotask run immediately
   const onChange = (info) => {
-    const {status} = info.file
+    const {status, originFileObj} = info.file
     if (status === "done") {
-      imgDataStore.addImage({src: `file://${info.file.originFileObj.path}`})
+      filePaths.push(`file://${info.file.originFileObj.path}`)
+      if (!folder) {
+        folder = originFileObj.path
+        setTimeout(() => {
+          bookStore.openBook(folder, filePaths)
+        })
+      }
+      folder = samePathBegin(folder, originFileObj.path)
     }
   }
+
   return (
-    <Upload.Dragger directory customRequest={({onSuccess}) => {
+    <Upload.Dragger directory showUploadList={false} director customRequest={({onSuccess}) => {
       onSuccess()
     }} multiple onChange={onChange}>
       <p>

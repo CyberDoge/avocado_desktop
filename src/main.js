@@ -9,10 +9,15 @@ let mainWindow
 function createWindow() {
   const image = nativeImage.createFromPath("public/logo.png")
   image.setTemplateImage(true)
-  mainWindow = new BrowserWindow({fullscreen: true, icon: image,  webPreferences: {
-    // God, forgive me
-      webSecurity: false
-    }})
+  mainWindow = new BrowserWindow({
+    fullscreen: true, icon: image, webPreferences: {
+      // God, forgive me
+      webSecurity: false,
+      allowRunningInsecureContent: false,
+      devTools: true,
+    }
+  })
+  mainWindow.openDevTools()
   mainWindow.loadURL(
     isDev
       ? "http://localhost:3000"
