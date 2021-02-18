@@ -13,7 +13,7 @@ class Book {
     return this.pagesUrl[this.currentPageIndex]
   }
 
-  openPage = (pageUrl) => () => {
+  openPage(pageUrl) {
     this.currentPageIndex = this.pagesUrl.indexOf(pageUrl)
   }
 }

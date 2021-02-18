@@ -1,4 +1,3 @@
-const nativeImage = require("electron").nativeImage
 const electron = require("electron")
 const app = electron.app
 const BrowserWindow = electron.BrowserWindow
@@ -7,7 +6,7 @@ const isDev = require("electron-is-dev")
 let mainWindow
 
 function createWindow() {
-  const image = nativeImage.createFromPath("public/logo.png")
+  const image = electron.nativeImage.createFromPath("public/logo.png")
   image.setTemplateImage(true)
   mainWindow = new BrowserWindow({
     fullscreen: true, icon: image, webPreferences: {
