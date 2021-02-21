@@ -1,0 +1,36 @@
+.controlFooter {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  overflow-y: hidden;
+  padding-top: 100px;
+  transition: padding-top 0.2s;
+  width: 100%;
+  height: 100px; }
+  .controlFooter:hover {
+    padding-top: 0; }
+  .controlFooter .pageControlContainer {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    background-color: black;
+    width: 164px;
+    margin: auto;
+    padding-top: 48px;
+    height: 100%; }
+    .controlFooter .pageControlContainer .pageControlButton {
+      border: 1px solid #5a5a5a;
+      border-bottom: none;
+      padding-top: 8px;
+      padding-bottom: 28px;
+      width: 50%;
+      height: 100%; }
+      .controlFooter .pageControlContainer .pageControlButton:last-child {
+        border-top-right-radius: 8px;
+        border-left: 1px solid #5a5a5a; }
+      .controlFooter .pageControlContainer .pageControlButton:first-child {
+        border-top-left-radius: 8px;
+        border-right: 1px solid #5a5a5a; }
+      .controlFooter .pageControlContainer .pageControlButton:hover {
+        background-color: rgba(154, 154, 154, 0.4); }
+
+/*# sourceMappingURL=PageController.module.css.map */
