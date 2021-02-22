@@ -13,7 +13,18 @@ class Book {
     return this.pagesUrl[this.currentPageIndex]
   }
 
-  openPage(pageUrl) {
+  nextPage = () => {
+    if (this.currentPageIndex < this.pagesUrl.length - 1) {
+      ++this.currentPageIndex
+    }
+  }
+
+  prevPage = () => {
+    if (this.currentPageIndex !== 0)
+      --this.currentPageIndex
+  }
+
+  openPage = (pageUrl) => {
     this.currentPageIndex = this.pagesUrl.indexOf(pageUrl)
   }
 }

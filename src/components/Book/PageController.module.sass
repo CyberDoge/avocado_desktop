@@ -2,24 +2,50 @@ $border-radius: 8px
 $page-control-height: 100px
 $border-color: #5a5a5a
 $button-height: 52px
+$button-color: rgba(154, 154, 154, 0.8)
 $page-control-top-buffer: $page-control-height - $button-height
-.controlFooter
-  position: absolute
-  left: 0
-  bottom: 0
-  overflow-y: hidden
+.controllerContainer
+  position: fixed
+  top: 0
+  width: 100%
+  height: 100%
+  display: flex
+  justify-content: space-between
+  flex-direction: column-reverse
+  pointer-events: none
+// todo hover not work
+.exitFullScreenBtn:hover
+  pointer-events: all
+  opacity: 1
+
+.hidingControlFooter
   padding-top: $page-control-height
-  transition: padding-top 0.2s
 
   &:hover
     padding-top: 0
+
+    + .exitFullScreenBtn
+      opacity: 1
+
+.exitFullScreenBtn
+  width: $button-height
+  height: $button-height
+  opacity: 0
+  margin-top: 10px
+  margin-left: auto
+  margin-right: 30px
+  background-color: $button-color
+
+.controlFooter
+  overflow-y: hidden
+  transition: padding-top 0.2s
   width: 100%
   height: $page-control-height
+  pointer-events: all
 
-  .pageControlContainer
+  .footerControl
     border-top-left-radius: $border-radius
     border-top-right-radius: $border-radius
-    background-color: rgb(0, 0, 0)
 
     width: 164px
     margin: auto
@@ -29,6 +55,11 @@ $page-control-top-buffer: $page-control-height - $button-height
     .pageControlButton
       border: 1px solid $border-color
       border-bottom: none
+      background-color: $button-color
+      padding-top: 8px
+      padding-bottom: 28px
+      width: 50%
+      height: 100%
 
       &:last-child
         border-top-right-radius: $border-radius
@@ -37,12 +68,6 @@ $page-control-top-buffer: $page-control-height - $button-height
       &:first-child
         border-top-left-radius: $border-radius
         border-right: 1px solid $border-color
-      padding-top: 8px
-      padding-bottom: 28px
-      width: 50%
-      height: 100%
 
-      &:hover
-        background-color: rgba(154, 154, 154, 0.4)
 
 

@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {observer} from "mobx-react-lite";
 import {StoreContext} from "../../store";
 import PageList from "./PageList";
@@ -12,13 +12,24 @@ import PageController from "./PageControler";
 
 const BookViewer = observer(() => {
   const {bookStore} = useContext(StoreContext)
+  useEffect(() => {
+    const onfullscreenchange = () => {
+      bookStore.isFullScreen = !bookStore.isFullScreen
+    }
+    document.onfullscreenchange = onfullscreenchange
+    return () => {
+      document.removeEventListener("fullscreenchange", onfullscreenchange)
+    }
+  })
+
   return (
     <Layout className={styles.container}>
       <Sider className={styles.pageList}>
-        <PageList width={250}/>
+        <PageList/>
       </Sider>
-      <Content>
-        <ImageScene className={styles.page} src={bookStore.currentBook.currentPage}
+      <Content onDoubleClick={(event) => !bookStore.isFullScreen && event.currentTarget.requestFullscreen()}>
+        <ImageScene className={styles.page}
+                    src={bookStore.currentBook.currentPage}
                     alt={basename(bookStore.currentBook.currentPage)}/>
         <PageController/>
       </Content>
