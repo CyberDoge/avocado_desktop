@@ -1,0 +1,79 @@
+.controllerContainer {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column-reverse;
+  pointer-events: none; }
+
+.hidingControlFooter {
+  padding-top: 100px; }
+  .hidingControlFooter:hover {
+    padding-top: 0; }
+
+.hidingControlFooter:hover + .exitFullScreenBtn {
+  opacity: 1;
+}
+
+.exitFullScreenContainer {
+  width: 104px;
+  height: 104px;
+  display: flex;
+  margin-top: 10px;
+  margin-left: auto;
+  margin-right: 30px;
+  pointer-events: all;
+  justify-content: center;
+}
+
+.exitFullScreenContainer:hover .exitFullScreenBtn {
+  opacity: 1;
+}
+
+.exitFullScreenContainer .exitFullScreenBtn {
+  width: 52px;
+  height: 52px;
+  opacity: 0;
+  background-color: rgba(154, 154, 154, 0.8);
+}
+
+.controlFooter {
+  overflow-y: hidden;
+  transition: padding-top 0.2s;
+  width: 100%;
+  height: 100px;
+  pointer-events: all;
+}
+
+.controlFooter .pageControlContainer {
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  width: 164px;
+  margin: auto;
+  padding-top: 48px;
+  height: 100%;
+}
+
+.controlFooter .pageControlContainer .pageControlButton {
+  border: 1px solid #5a5a5a;
+  border-bottom: none;
+  background-color: rgba(154, 154, 154, 0.8);
+  padding-top: 8px;
+  padding-bottom: 28px;
+  width: 50%;
+  height: 100%;
+}
+
+.controlFooter .pageControlContainer .pageControlButton:last-child {
+  border-top-right-radius: 8px;
+  border-left: 1px solid #5a5a5a;
+}
+
+.controlFooter .pageControlContainer .pageControlButton:first-child {
+  border-top-left-radius: 8px;
+  border-right: 1px solid #5a5a5a;
+}
+
+/*# sourceMappingURL=PageController.module.css.map */
