@@ -5,7 +5,7 @@ Error: File to import not found or unreadable: src/const.
 1: @import "src/const"
 2: .container
 3:   display: flex
-4:   max-height: 100vh
+4:   height: 100vh
 5: 
 6: .pageList
 
@@ -48,4 +48,4 @@ BookViewer.module.sass:1
 body:before {
   white-space: pre;
   font-family: monospace;
-  content: "Error: File to import not found or unreadable: src/const.\A         on line 1 of BookViewer.module.sass\A \A 1: @import \"src/const\"\A 2: .container\A 3:   display: flex\A 4:   max-height: 100vh\A 5: \A 6: .pageList"; }
+  content: "Error: File to import not found or unreadable: src/const.\A         on line 1 of BookViewer.module.sass\A \A 1: @import \"src/const\"\A 2: .container\A 3:   display: flex\A 4:   height: 100vh\A 5: \A 6: .pageList"; }

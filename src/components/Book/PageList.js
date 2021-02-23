@@ -10,6 +10,7 @@ const PageList = observer(() => {
   return useMemo(() => (
     <div className={styles.container}>
       <List
+        className={styles.list}
         size={"small"}
         itemLayout="horizontal"
         dataSource={currentBook.pagesUrl}

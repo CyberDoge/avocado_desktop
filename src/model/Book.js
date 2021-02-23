@@ -13,6 +13,10 @@ class Book {
     return this.pagesUrl[this.currentPageIndex]
   }
 
+  get isLastPage() {
+    return this.currentPageIndex === this.pagesUrl.length - 1
+  }
+
   nextPage = () => {
     if (this.currentPageIndex < this.pagesUrl.length - 1) {
       ++this.currentPageIndex

@@ -22,7 +22,11 @@ class BookStore {
     return this.books.get(this.currentBookPath)
   }
 
-  openBook(path, pages) {
+  dropCurrentBook = () => {
+    this.currentBookPath = null
+  }
+
+  openBook = (path, pages) => {
     this.books.set(path, new Book(path, basename(path), pages))
     this.currentBookPath = path
   }

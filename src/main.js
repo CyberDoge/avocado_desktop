@@ -9,7 +9,7 @@ function createWindow() {
   const image = electron.nativeImage.createFromPath("public/logo.png")
   image.setTemplateImage(true)
   mainWindow = new BrowserWindow({
-    fullscreen: true, icon: image, webPreferences: {
+    icon: image, webPreferences: {
       // God, forgive me
       webSecurity: false,
       allowRunningInsecureContent: false,
@@ -17,6 +17,7 @@ function createWindow() {
     }
   })
   mainWindow.openDevTools()
+  mainWindow.maximize()
   mainWindow.loadURL(
     isDev
       ? "http://localhost:3000"
