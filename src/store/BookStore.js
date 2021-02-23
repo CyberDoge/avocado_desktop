@@ -6,16 +6,7 @@ class BookStore {
   constructor() {
     this.books = new Map()
     this.currentBookPath = null
-    this._isFullScreen = false
     makeAutoObservable(this)
-  }
-
-  get isFullScreen() {
-    return this._isFullScreen;
-  }
-
-  set isFullScreen(value) {
-    this._isFullScreen = value;
   }
 
   get currentBook() {

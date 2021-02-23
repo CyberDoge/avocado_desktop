@@ -8,25 +8,24 @@ import Sider from "antd/es/layout/Sider";
 import styles from "./BookViewer.module.sass"
 import {Content, Header} from "antd/es/layout/layout";
 import ImageScene from "./ImageScene";
-import {basename} from "path"
 import PageController from "./PageControler";
 
 const BookViewer = observer(() => {
-  const {bookStore} = useContext(StoreContext)
+  const {bookStore, bookViewerStore} = useContext(StoreContext)
   useEffect(() => {
     const onfullscreenchange = () => {
-      bookStore.isFullScreen = !bookStore.isFullScreen
+      bookViewerStore.isFullScreen = !bookViewerStore.isFullScreen
     }
     const onKeyDown = (event) => {
       if (event.key === "ArrowRight") {
-        if (bookStore.currentBook.isLastPage && bookStore.isFullScreen) {
+        if (bookStore.currentBook.isLastPage && bookViewerStore.isFullScreen) {
         }
         bookStore.currentBook.nextPage()
       } else if (event.key === "ArrowLeft") {
         bookStore.currentBook.prevPage()
-      } else if (event.key === " " && bookStore.isFullScreen) {
+      } else if (event.key === " " && bookViewerStore.isFullScreen) {
         event.preventDefault()
-        if (bookStore.currentBook.isLastPage && bookStore.isFullScreen) {
+        if (bookStore.currentBook.isLastPage && bookViewerStore.isFullScreen) {
           document.exitFullscreen()
         }
         bookStore.currentBook.nextPage()
@@ -38,7 +37,7 @@ const BookViewer = observer(() => {
       document.removeEventListener("fullscreenchange", onfullscreenchange)
       window.removeEventListener("keydown", onKeyDown)
     }
-  }, [bookStore.isFullScreen, bookStore.currentBook, bookStore])
+  }, [bookViewerStore.isFullScreen, bookStore.currentBook, bookStore, bookViewerStore])
 
   return (
     <Layout className={styles.container}>
@@ -50,10 +49,8 @@ const BookViewer = observer(() => {
         </Header>
         <PageList/>
       </Sider>
-      <Content onDoubleClick={(event) => !bookStore.isFullScreen && event.currentTarget.requestFullscreen()}>
-        <ImageScene className={styles.page}
-                    src={bookStore.currentBook.currentPage}
-                    alt={basename(bookStore.currentBook.currentPage)}/>
+      <Content onDoubleClick={(event) => !bookViewerStore.isFullScreen && event.currentTarget.requestFullscreen()}>
+        <ImageScene/>
         <PageController/>
       </Content>
     </Layout>

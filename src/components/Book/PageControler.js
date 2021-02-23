@@ -7,11 +7,11 @@ import {StoreContext} from "../../store";
 import {observer} from "mobx-react-lite";
 
 const PageController = observer(() => {
-  const {bookStore} = useContext(StoreContext)
+  const {bookStore, bookViewerStore} = useContext(StoreContext)
 
   return (
     <div className={styles.controllerContainer}>
-      <div className={cn(bookStore.isFullScreen && styles.hidingControlFooter, styles.controlFooter)}>
+      <div className={cn(bookViewerStore.isFullScreen && styles.hidingControlFooter, styles.controlFooter)}>
         <div className={styles.pageControlContainer}>
           <Button onClick={bookStore.currentBook.prevPage} className={styles.pageControlButton} type={"text"}
                   size={"large"}><LeftOutlined/></Button>
