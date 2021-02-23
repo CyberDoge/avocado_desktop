@@ -13,10 +13,6 @@ $page-control-top-buffer: $page-control-height - $button-height
   justify-content: space-between
   flex-direction: column-reverse
   pointer-events: none
-// todo hover not work
-.exitFullScreenBtn:hover
-  pointer-events: all
-  opacity: 1
 
 .hidingControlFooter
   padding-top: $page-control-height
@@ -27,14 +23,25 @@ $page-control-top-buffer: $page-control-height - $button-height
     + .exitFullScreenBtn
       opacity: 1
 
-.exitFullScreenBtn
-  width: $button-height
-  height: $button-height
-  opacity: 0
+.exitFullScreenContainer
+  width: $button-height * 2
+  height: $button-height * 2
+  display: flex
   margin-top: 10px
   margin-left: auto
   margin-right: 30px
-  background-color: $button-color
+  pointer-events: all
+  justify-content: center
+
+  &:hover .exitFullScreenBtn
+    opacity: 1
+
+  .exitFullScreenBtn
+    width: $button-height
+    height: $button-height
+    opacity: 0
+    background-color: $button-color
+
 
 .controlFooter
   overflow-y: hidden
@@ -43,7 +50,7 @@ $page-control-top-buffer: $page-control-height - $button-height
   height: $page-control-height
   pointer-events: all
 
-  .footerControl
+  .pageControlContainer
     border-top-left-radius: $border-radius
     border-top-right-radius: $border-radius
 
