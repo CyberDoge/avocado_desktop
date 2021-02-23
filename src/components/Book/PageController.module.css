@@ -6,12 +6,16 @@
   display: flex;
   justify-content: space-between;
   flex-direction: column-reverse;
-  pointer-events: none; }
+  pointer-events: none;
+}
 
 .hidingControlFooter {
-  padding-top: 100px; }
-  .hidingControlFooter:hover {
-    padding-top: 0; }
+  padding-top: 100px;
+}
+
+.hidingControlFooter:hover {
+  padding-top: 0;
+}
 
 .hidingControlFooter:hover + .exitFullScreenBtn {
   opacity: 1;

@@ -38,7 +38,10 @@ const BookViewer = observer(() => {
       window.removeEventListener("keydown", onKeyDown)
     }
   }, [bookViewerStore.isFullScreen, bookStore.currentBook, bookStore, bookViewerStore])
-
+  useEffect(() => {
+    // todo change to ref
+    document.querySelector("main").scrollTop = 0
+  }, [bookStore.currentBook.currentPageIndex])
   return (
     <Layout className={styles.container}>
       <Sider className={styles.leftAside}>
