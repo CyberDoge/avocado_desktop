@@ -5,6 +5,7 @@ import {InboxOutlined} from "@ant-design/icons"
 import styles from "./FileExplorer.module.sass"
 import {StoreContext} from "../store";
 import samePathBegin from "../utils/samePathBegin";
+import * as path from "path"
 
 const FileExplorer = observer(() => {
   const {bookStore} = useContext(StoreContext);
@@ -14,7 +15,7 @@ const FileExplorer = observer(() => {
   const onChange = (info) => {
     const {status, originFileObj} = info.file
     if (status === "done") {
-      filePaths.push(`file://${info.file.originFileObj.path}`)
+      filePaths.push(path.normalize(`file://${info.file.originFileObj.path}`))
       if (!folder) {
         folder = originFileObj.path
         setTimeout(() => {
