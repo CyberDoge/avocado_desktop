@@ -1,9 +1,13 @@
 {
   "name": "avocado_desktop",
   "homepage": "./",
-  "main": "./src/main.js",
+  "main": "public/electron.js",
   "version": "0.1.0",
   "private": true,
+  "author": {
+    "name": "cyber doge",
+    "email": "tagirman998@gmail.com"
+  },
   "dependencies": {
     "@ant-design/icons": "^4.5.0",
     "@testing-library/jest-dom": "^5.11.4",
@@ -32,6 +36,30 @@
     "build": "yarn react-build && yarn electron-build",
     "start": "concurrently \"cross-env BROWSER=none yarn react-start\" \"wait-on http://localhost:3000 && electron bootwithbabel.js . --inspect=9223 --remote-debugging-port=9222\"",
     "electron-start": "electron ."
+  },
+  "build": {
+    "appId": "io.cyber_doge.avocado",
+    "mac": {
+      "category": "public.app-category.entertainment",
+      "target": [
+        "zip",
+        "dmg"
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "icon": "public/icon.png"
+    },
+    "win": {
+      "target": "squirrel",
+      "icon": "public/icon.png"
+    },
+    "publish": {
+      "provider": "github"
+    }
   },
   "eslintConfig": {
     "extends": [

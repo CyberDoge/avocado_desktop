@@ -6,16 +6,17 @@ const isDev = require("electron-is-dev")
 let mainWindow
 
 function createWindow() {
-  const image = electron.nativeImage.createFromPath("public/logo.png")
+  const image = electron.nativeImage.createFromPath("public/icon.png")
   image.setTemplateImage(true)
   mainWindow = new BrowserWindow({
     icon: image, webPreferences: {
       // God, forgive me
       webSecurity: false,
       allowRunningInsecureContent: false,
-      devTools: true,
+      devTools: isDev,
     }
   })
+  console.log(image.isEmpty())
   mainWindow.openDevTools()
   mainWindow.maximize()
   mainWindow.loadURL(
