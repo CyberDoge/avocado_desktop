@@ -1,4 +1,4 @@
-import {makeAutoObservable} from "mobx";
+import { makeAutoObservable } from "mobx"
 
 class Book {
   constructor(path, name, pagesUrl = []) {
@@ -24,8 +24,7 @@ class Book {
   }
 
   prevPage = () => {
-    if (this.currentPageIndex !== 0)
-      --this.currentPageIndex
+    if (this.currentPageIndex !== 0) --this.currentPageIndex
   }
 
   openPage = (pageUrl) => {

@@ -32,6 +32,7 @@ $page-control-top-buffer: $page-control-height - $button-height
   pointer-events: all
   justify-content: center
   opacity: 0
+  transition: opacity 0.2s
 
   &:hover
     opacity: 1
@@ -75,5 +76,8 @@ $page-control-top-buffer: $page-control-height - $button-height
         border-top-left-radius: $border-radius
         border-right: 1px solid $border-color
 
-
-
+.showAll
+  & > .hidingControlFooter
+    padding-top: 0
+  & > .exitFullScreenContainer
+    opacity: 1

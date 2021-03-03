@@ -1,6 +1,6 @@
-import {makeAutoObservable} from "mobx";
-import Book from "../model/Book";
-import {basename} from "path"
+import { makeAutoObservable } from "mobx"
+import Book from "../model/Book"
+import { basename } from "path"
 
 class BookStore {
   constructor() {
@@ -22,7 +22,6 @@ class BookStore {
     this.books.set(path, new Book(path, basename(path), pages))
     this.currentBookPath = path
   }
-
 }
 
 export default BookStore

@@ -1,7 +1,7 @@
-import {makeAutoObservable} from "mobx";
-import BookStore from "./BookStore";
+import { makeAutoObservable } from "mobx"
+import BookStore from "./BookStore"
 import React from "react"
-import BookViewerStore from "./BookViewerStore";
+import BookViewerStore from "./BookViewerStore"
 
 class RootStore {
   constructor() {
@@ -11,6 +11,6 @@ class RootStore {
   }
 }
 
-export const StoreContext = React.createContext({});
+export const StoreContext = React.createContext({})
 
 export default RootStore

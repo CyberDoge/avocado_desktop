@@ -1,17 +1,17 @@
-import React, {useContext, useEffect} from 'react';
-import {observer} from "mobx-react-lite";
-import {StoreContext} from "../../store";
-import PageList from "./PageList";
-import {Button, Layout} from "antd";
-import {CloseOutlined} from "@ant-design/icons";
-import Sider from "antd/es/layout/Sider";
+import React, { useContext, useEffect } from "react"
+import { observer } from "mobx-react-lite"
+import { StoreContext } from "../../store"
+import PageList from "./PageList"
+import { Button, Layout } from "antd"
+import { CloseOutlined } from "@ant-design/icons"
+import Sider from "antd/es/layout/Sider"
 import styles from "./BookViewer.module.sass"
-import {Content, Header} from "antd/es/layout/layout";
-import ImageScene from "./ImageScene";
-import PageController from "./PageControler";
+import { Content, Header } from "antd/es/layout/layout"
+import ImageScene from "./ImageScene"
+import PageController from "./PageControler"
 
 const BookViewer = observer(() => {
-  const {bookStore, bookViewerStore} = useContext(StoreContext)
+  const { bookStore, bookViewerStore } = useContext(StoreContext)
   useEffect(() => {
     const onfullscreenchange = () => {
       bookViewerStore.isFullScreen = !bookViewerStore.isFullScreen
@@ -32,12 +32,17 @@ const BookViewer = observer(() => {
       }
     }
     document.onfullscreenchange = onfullscreenchange
-    window.addEventListener("keydown", onKeyDown);
+    window.addEventListener("keydown", onKeyDown)
     return () => {
       document.removeEventListener("fullscreenchange", onfullscreenchange)
       window.removeEventListener("keydown", onKeyDown)
     }
-  }, [bookViewerStore.isFullScreen, bookStore.currentBook, bookStore, bookViewerStore])
+  }, [
+    bookViewerStore.isFullScreen,
+    bookStore.currentBook,
+    bookStore,
+    bookViewerStore,
+  ])
   useEffect(() => {
     // todo change to ref
     document.querySelector("main").scrollTop = 0
@@ -47,17 +52,22 @@ const BookViewer = observer(() => {
       <Sider className={styles.leftAside}>
         <Header>
           <Button shape="circle" onClick={bookStore.dropCurrentBook}>
-            <CloseOutlined/>
+            <CloseOutlined />
           </Button>
         </Header>
-        <PageList/>
+        <PageList />
       </Sider>
-      <Content onDoubleClick={(event) => !bookViewerStore.isFullScreen && event.currentTarget.requestFullscreen()}>
-        <ImageScene/>
-        <PageController/>
+      <Content
+        onDoubleClick={(event) =>
+          !bookViewerStore.isFullScreen &&
+          event.currentTarget.requestFullscreen()
+        }
+      >
+        <ImageScene />
+        <PageController />
       </Content>
     </Layout>
-  );
-});
+  )
+})
 
-export default BookViewer;
+export default BookViewer
