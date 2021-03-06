@@ -1,12 +1,18 @@
 import { makeAutoObservable } from "mobx"
+import decomposeFilesToFolder from "../utils/decomposeFilesToFolder"
 
 class Book {
-  constructor(path, name, pagesUrl = []) {
+  constructor(name, path, pagesUrl = []) {
     this.path = path
     this.pagesUrl = pagesUrl
+    this._toms = decomposeFilesToFolder(path, pagesUrl)
     this.name = name
     this.currentPageIndex = 0
     makeAutoObservable(this)
+  }
+
+  get toms() {
+    return this._toms
   }
 
   get currentPage() {
