@@ -1,12 +1,13 @@
-export default function decomposeFilesToFolder(rootPath, pagesUrl) {
+export default function decomposeFilesToToms(rootPath, pagesUrl) {
   let result = []
   let level = { result }
-
+  // todo change to dynamic protocol
+  const protocol = "file:/"
+  const lengthOfProtocol = protocol.length
   pagesUrl.forEach((path) => {
     path
-      .substr(5 + rootPath.length)
+      .substr(lengthOfProtocol + rootPath.length)
       .split("/")
-      .filter(Boolean)
       .reduce((r, title) => {
         if (!r[title]) {
           r[title] = { result: [] }
@@ -20,9 +21,9 @@ export default function decomposeFilesToFolder(rootPath, pagesUrl) {
   return result
 }
 
+// todo delete
 function deleteEmptyChildren(object) {
   if (object.children?.length === 0) {
-    delete object.children
     object.isLeaf = true
     object.key = object.path
   }

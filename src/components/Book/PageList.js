@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react"
+import React, { useContext, useEffect, useRef } from "react"
 import { observer } from "mobx-react-lite"
 import { StoreContext } from "../../store"
 import { Tree } from "antd"
@@ -13,8 +13,10 @@ const PageList = observer(({ className }) => {
   } = useContext(StoreContext)
   const itemsRef = useRef([])
   useEffect(() => {
+    // todo wrong image
+    console.log(itemsRef.current[currentBook.currentPageIndex])
     if (bookViewerStore.isFullScreen && bookViewerStore.isDrawerOpen) {
-      itemsRef.current[currentBook.currentPageIndex].scrollIntoView()
+      itemsRef.current[currentBook.currentPageIndex]?.scrollIntoView()
     }
   }, [
     bookViewerStore.isFullScreen,
@@ -26,10 +28,12 @@ const PageList = observer(({ className }) => {
       <Tree.DirectoryTree
         switcherIcon={<DownOutlined />}
         showIcon={false}
-        // expandedKeys={[currentBook.toms[2].key]}
-        selectedKeys={[currentBook.currentPage]}
-        // defaultExpandedKeys={[currentBook.toms[0].key]}
+        defaultExpandedKeys={[currentBook.toms[0].key]}
+        expandedKeys={[currentBook.currentChapter?.key]}
         treeData={currentBook.toms}
+        onExpand={(_, { expanded, node }) => {
+          currentBook.currentChapter = expanded ? node : []
+        }}
         onSelect={(_, info) => {
           if (info.node.isLeaf) {
             currentBook.openPage(info.node.path)
