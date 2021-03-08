@@ -11,12 +11,10 @@ const PageList = observer(({ className }) => {
     bookStore: { currentBook },
     bookViewerStore,
   } = useContext(StoreContext)
-  const itemsRef = useRef([])
+  const itemRefMap = useRef(new Map())
   useEffect(() => {
-    // todo wrong image
-    console.log(itemsRef.current[currentBook.currentPageIndex])
     if (bookViewerStore.isFullScreen && bookViewerStore.isDrawerOpen) {
-      itemsRef.current[currentBook.currentPageIndex]?.scrollIntoView()
+      itemRefMap.current.get(currentBook.currentPageIndex).scrollIntoView()
     }
   }, [
     bookViewerStore.isFullScreen,
@@ -31,6 +29,7 @@ const PageList = observer(({ className }) => {
         defaultExpandedKeys={[currentBook.toms[0].key]}
         expandedKeys={[currentBook.currentChapter?.key]}
         treeData={currentBook.toms}
+        selectedKeys={[currentBook.currentPage]}
         onExpand={(_, { expanded, node }) => {
           currentBook.currentChapter = expanded ? node : []
         }}
@@ -42,7 +41,10 @@ const PageList = observer(({ className }) => {
         titleRender={(data) =>
           data.isLeaf ? (
             <img
-              ref={(ref) => itemsRef.current.push(ref)}
+              ref={(ref) => {
+                !itemRefMap.current.has(data.index) &&
+                  itemRefMap.current.set(data.index, ref)
+              }}
               alt={data.title}
               className={styles.preview}
               src={data.path}

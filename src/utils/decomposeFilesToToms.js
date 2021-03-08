@@ -4,38 +4,44 @@ export default function decomposeFilesToToms(rootPath, pagesUrl) {
   // todo change to dynamic protocol
   const protocol = "file:/"
   const lengthOfProtocol = protocol.length
-  pagesUrl.forEach((path) => {
+  pagesUrl.forEach((path, index) => {
     path
       .substr(lengthOfProtocol + rootPath.length)
       .split("/")
       .reduce((r, title) => {
+        // todo разобраться как заполняются данные и пихать isLeaf сразу
         if (!r[title]) {
           r[title] = { result: [] }
-          r.result.push({ title, children: r[title].result, key: title, path })
+          r.result.push({
+            title,
+            children: r[title].result,
+            key: title, // todo key for folder by path
+            path,
+            index,
+          })
         }
         return r[title]
       }, level)
   })
 
-  deleteEmptyChildren(result)
+  setupLeafObjects(result)
   return result
 }
 
-// todo delete
-function deleteEmptyChildren(object) {
+function setupLeafObjects(object) {
   if (object.children?.length === 0) {
     object.isLeaf = true
     object.key = object.path
   }
   if (Array.isArray(object)) {
-    object.forEach(deleteEmptyChildren)
+    object.forEach(setupLeafObjects)
   } else {
     for (let property in object) {
       if (
         object.hasOwnProperty(property) &&
         typeof object[property] === "object"
       ) {
-        deleteEmptyChildren(object[property])
+        setupLeafObjects(object[property])
       }
     }
   }

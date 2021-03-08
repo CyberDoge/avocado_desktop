@@ -28,7 +28,7 @@ const BookViewer = observer(() => {
             <VerticalAlignMiddleOutlined />
           </Button>
         </Header>
-        <PageList />
+        {!bookViewerStore.isFullScreen && <PageList />}
       </Sider>
       <Content
         id={"imageContent"}
