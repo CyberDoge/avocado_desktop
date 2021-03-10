@@ -24,7 +24,10 @@ const BookViewer = observer(() => {
           <Button shape="circle" onClick={bookStore.dropCurrentBook}>
             <CloseOutlined />
           </Button>
-          <Button shape="circle" onClick={bookStore.dropCurrentBook}>
+          <Button
+            shape="circle"
+            onClick={bookStore.currentBook.dropCurrentChapter}
+          >
             <VerticalAlignMiddleOutlined />
           </Button>
         </Header>

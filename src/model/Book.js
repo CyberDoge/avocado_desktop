@@ -12,6 +12,10 @@ class Book {
     makeAutoObservable(this)
   }
 
+  dropCurrentChapter = () => {
+    this.currentChapter = null
+  }
+
   get currentChapter() {
     return this._currentChapter
   }

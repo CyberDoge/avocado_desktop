@@ -26,7 +26,10 @@ const PageController = observer(() => {
           styles.controlFooter
         )}
       >
-        <div className={styles.pageControlContainer}>
+        <div
+          className={styles.pageControlContainer}
+          onDoubleClick={(event) => event.stopPropagation()}
+        >
           <Button
             onClick={bookStore.currentBook.prevPage}
             className={styles.pageControlButton}
