@@ -6,6 +6,7 @@ import { Drawer } from "antd"
 import styles from "./ImageScene.module.sass"
 import { basename } from "path"
 import { useState } from "react"
+import cn from "classnames"
 
 const initialMouseCoords = {
   startPosition: null,
@@ -68,7 +69,11 @@ const ImageScene = observer(() => {
           bookViewerStore.isFullScreen && bookStore.currentBook.nextPage()
         }}
         draggable={false}
-        className={styles.page}
+        className={cn(
+          bookViewerStore.isFullWidth
+            ? styles.fullWidthPage
+            : styles.fullHeightPage
+        )}
         alt={basename(bookStore.currentBook.currentPage)}
         src={bookStore.currentBook.currentPage}
       />

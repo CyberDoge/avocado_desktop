@@ -5,7 +5,16 @@ class BookViewerStore {
     this._isFullScreen = false
     this._isDrawerOpen = false
     this._isForceShowControl = false
+    this._isFullWidth = false
     makeAutoObservable(this)
+  }
+
+  get isFullWidth() {
+    return this._isFullWidth
+  }
+
+  set isFullWidth(value) {
+    this._isFullWidth = value
   }
 
   get isForceShowControl() {

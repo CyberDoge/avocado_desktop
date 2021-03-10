@@ -3,9 +3,11 @@ import styles from "./PageController.module.sass"
 import { Button } from "antd"
 import cn from "classnames"
 import {
+  ArrowsAltOutlined,
   FullscreenExitOutlined,
   LeftOutlined,
   RightOutlined,
+  ShrinkOutlined,
 } from "@ant-design/icons"
 import { StoreContext } from "../../store"
 import { observer } from "mobx-react-lite"
@@ -54,6 +56,18 @@ const PageController = observer(() => {
           onClick={() => document.exitFullscreen()}
         >
           <FullscreenExitOutlined />
+        </Button>
+        <Button
+          className={styles.exitFullScreenBtn}
+          onClick={() =>
+            (bookViewerStore.isFullWidth = !bookViewerStore.isFullWidth)
+          }
+        >
+          {bookViewerStore.isFullWidth ? (
+            <ShrinkOutlined />
+          ) : (
+            <ArrowsAltOutlined />
+          )}
         </Button>
       </div>
     </div>
