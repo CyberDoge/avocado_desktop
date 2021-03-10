@@ -1,0 +1,7 @@
+.ant-tree.ant-tree-directory .ant-tree-treenode-selected:hover::before,
+.ant-tree.ant-tree-directory .ant-tree-treenode-selected::before {
+  background: rgba(124, 173, 250, 0.1);
+}
+.ant-tree-indent, .ant-tree-switcher-noop {
+  display: none;
+}

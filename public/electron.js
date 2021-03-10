@@ -9,12 +9,13 @@ function createWindow() {
   const image = electron.nativeImage.createFromPath("public/icon.png")
   image.setTemplateImage(true)
   mainWindow = new BrowserWindow({
-    icon: image, webPreferences: {
+    icon: image,
+    webPreferences: {
       // God, forgive me
       webSecurity: false,
       allowRunningInsecureContent: false,
       devTools: isDev,
-    }
+    },
   })
   console.log(image.isEmpty())
   mainWindow.openDevTools()
@@ -25,10 +26,10 @@ function createWindow() {
       : `file://${path.join(__dirname, "../build/index.html")}`
   )
   mainWindow.on("closed", () => (mainWindow = null))
-  electron.protocol.registerFileProtocol('file', (request, callback) => {
-    const pathname = decodeURI(request.url.replace('file:///', ''))
-    callback(pathname);
-  });
+  electron.protocol.registerFileProtocol("file", (request, callback) => {
+    const pathname = decodeURI(request.url.replace("file:///", ""))
+    callback(pathname)
+  })
 }
 
 app.on("ready", createWindow)

@@ -1,12 +1,31 @@
-import {makeAutoObservable} from "mobx";
+import { makeAutoObservable } from "mobx"
+import decomposeFilesToToms from "../utils/decomposeFilesToToms"
 
 class Book {
-  constructor(path, name, pagesUrl = []) {
+  constructor(name, path, pagesUrl = []) {
     this.path = path
     this.pagesUrl = pagesUrl
     this.name = name
     this.currentPageIndex = 0
+    this._toms = decomposeFilesToToms(path, pagesUrl)
+    this._currentChapter = this.updateChapter(this.toms)
     makeAutoObservable(this)
+  }
+
+  dropCurrentChapter = () => {
+    this.currentChapter = null
+  }
+
+  get currentChapter() {
+    return this._currentChapter
+  }
+
+  set currentChapter(value) {
+    this._currentChapter = value
+  }
+
+  get toms() {
+    return this._toms
   }
 
   get currentPage() {
@@ -17,15 +36,37 @@ class Book {
     return this.currentPageIndex === this.pagesUrl.length - 1
   }
 
+  updateChapter = (object) => {
+    if (object.children?.some((child) => child.key === this.currentPage)) {
+      return object
+    }
+    if (Array.isArray(object)) {
+      return object.find(this.updateChapter)
+    } else {
+      for (let property in object) {
+        if (
+          object.hasOwnProperty(property) &&
+          typeof object[property] === "object"
+        ) {
+          const res = this.updateChapter(object[property])
+          if (res) {
+            return res
+          }
+        }
+      }
+    }
+  }
+
   nextPage = () => {
     if (this.currentPageIndex < this.pagesUrl.length - 1) {
       ++this.currentPageIndex
     }
+    this.currentChapter = this.updateChapter(this.toms)
   }
 
   prevPage = () => {
-    if (this.currentPageIndex !== 0)
-      --this.currentPageIndex
+    if (this.currentPageIndex !== 0) --this.currentPageIndex
+    this.currentChapter = this.updateChapter(this.toms)
   }
 
   openPage = (pageUrl) => {
