@@ -16,8 +16,16 @@ const useHotKeys = () => {
         bookStore.currentBook.nextPage()
       } else if (event.key === "ArrowLeft") {
         bookStore.currentBook.prevPage()
-      } else if (event.key === " " && bookViewerStore.isFullScreen) {
+      } else if (
+        event.key === " " &&
+        bookViewerStore.isFullScreen &&
+        !bookViewerStore.isFullWidth
+      ) {
         event.preventDefault()
+        if (event.shiftKey) {
+          bookStore.currentBook.prevPage()
+          return
+        }
         if (bookStore.currentBook.isLastPage) {
           document.exitFullscreen()
         }
@@ -34,7 +42,7 @@ const useHotKeys = () => {
     bookViewerStore.isFullScreen,
     bookStore.currentBook,
     bookStore,
-    bookViewerStore,
+    bookViewerStore
   ])
 }
 
