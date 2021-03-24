@@ -6,47 +6,42 @@ import styles from "./FileExplorer.module.sass"
 import { StoreContext } from "../store"
 import samePathBegin from "../utils/samePathBegin"
 import * as path from "path"
-import * as fflate from "fflate"
 import * as os from "os"
 
 // electron does not support module import of node libs
-const fs = window.require("fs")
+const { ipcRenderer } = window.require("electron")
 
 const FileExplorer = observer(() => {
   const { bookStore } = useContext(StoreContext)
   let folder = null
-  const filePaths = []
+  let filePaths = []
   // todo corner case if drag and drop folder with files macrotask run immediately
-  const onChange = (info) => {
+  const onChange = async (info) => {
     const { status, originFileObj, type } = info.file
-    if (status === "done") {
-      if (type === "application/zip") {
-        let isTmpFolderExist = fs.existsSync(`${os.tmpdir()}${path.sep}avocado-desktop`);
-        const data = fs.readFileSync(info.file.originFileObj.path)
-        const unzipped = fflate.unzipSync(data)
-        for (const file in unzipped) {
-          if(!unzipped.hasOwnProperty(file)){
-            continue
-          }
-          if (!isTmpFolderExist) {
-            fs.mkdirSync(`${os.tmpdir()}${path.sep}avocado-desktop`)
-            isTmpFolderExist = true
-          }
-          const dir = `${os.tmpdir()}${path.sep}avocado-desktop${
-            path.sep
-          }${file}`
-          fs.writeFileSync(dir, unzipped[file])
-          filePaths.push(path.normalize(`file://${dir}`))
-        }
-      } else {
-        filePaths.push(path.normalize(`file://${info.file.originFileObj.path}`))
+    if (status !== "done") {
+      return
+    }
+    if (!folder) {
+      folder = originFileObj.path
+      setTimeout(() => {
+        bookStore.openBook(folder, filePaths)
+      }, 10000)
+    }
+    if (type === "application/zip") {
+      const zipSource = originFileObj.path
+      const unzipDest = `${os.tmpdir()}${path.sep}avocado-desktop`
+      const files = await ipcRenderer.invoke("unzip", zipSource, unzipDest)
+      if (!files) {
+        return
       }
-      if (!folder) {
-        folder = originFileObj.path
-        setTimeout(() => {
-          bookStore.openBook(folder, filePaths)
-        })
-      }
+      filePaths = filePaths.concat(
+        files.map(file =>
+          path.normalize(`file://${unzipDest}${path.sep}${file}`)
+        )
+      )
+      folder = unzipDest
+    } else {
+      filePaths.push(path.normalize(`file://${originFileObj.path}`))
       folder = samePathBegin(folder, originFileObj.path)
     }
   }
