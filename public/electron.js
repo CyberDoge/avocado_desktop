@@ -13,6 +13,8 @@ function createWindow() {
     webPreferences: {
       // God, forgive me
       webSecurity: false,
+      nodeIntegration: true,
+      nodeIntegrationInWorker: true,
       allowRunningInsecureContent: false,
       devTools: isDev,
     },

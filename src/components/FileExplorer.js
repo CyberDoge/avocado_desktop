@@ -6,6 +6,11 @@ import styles from "./FileExplorer.module.sass"
 import { StoreContext } from "../store"
 import samePathBegin from "../utils/samePathBegin"
 import * as path from "path"
+import * as fflate from "fflate"
+import * as os from "os"
+
+// electron does not support module import of node libs
+const fs = window.require("fs")
 
 const FileExplorer = observer(() => {
   const { bookStore } = useContext(StoreContext)
@@ -13,9 +18,29 @@ const FileExplorer = observer(() => {
   const filePaths = []
   // todo corner case if drag and drop folder with files macrotask run immediately
   const onChange = (info) => {
-    const { status, originFileObj } = info.file
+    const { status, originFileObj, type } = info.file
     if (status === "done") {
-      filePaths.push(path.normalize(`file://${info.file.originFileObj.path}`))
+      if (type === "application/zip") {
+        let isTmpFolderExist = fs.existsSync(`${os.tmpdir()}${path.sep}avocado-desktop`);
+        const data = fs.readFileSync(info.file.originFileObj.path)
+        const unzipped = fflate.unzipSync(data)
+        for (const file in unzipped) {
+          if(!unzipped.hasOwnProperty(file)){
+            continue
+          }
+          if (!isTmpFolderExist) {
+            fs.mkdirSync(`${os.tmpdir()}${path.sep}avocado-desktop`)
+            isTmpFolderExist = true
+          }
+          const dir = `${os.tmpdir()}${path.sep}avocado-desktop${
+            path.sep
+          }${file}`
+          fs.writeFileSync(dir, unzipped[file])
+          filePaths.push(path.normalize(`file://${dir}`))
+        }
+      } else {
+        filePaths.push(path.normalize(`file://${info.file.originFileObj.path}`))
+      }
       if (!folder) {
         folder = originFileObj.path
         setTimeout(() => {
@@ -28,12 +53,11 @@ const FileExplorer = observer(() => {
 
   return (
     <Upload.Dragger
-      directory
       showUploadList={false}
-      director
       customRequest={({ onSuccess }) => {
         onSuccess()
       }}
+      directory
       multiple
       onChange={onChange}
     >

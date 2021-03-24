@@ -26,7 +26,7 @@ const PageList = observer(({ className }) => {
       <Tree.DirectoryTree
         switcherIcon={<DownOutlined />}
         showIcon={false}
-        defaultExpandedKeys={[currentBook.toms[0].key]}
+        defaultExpandedKeys={[currentBook.toms[0]?.key]}
         expandedKeys={[currentBook.currentChapter?.key]}
         treeData={currentBook.toms}
         selectedKeys={[currentBook.currentPage]}
