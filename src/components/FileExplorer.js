@@ -1,5 +1,5 @@
-import React, { useContext } from "react"
-import { Upload } from "antd"
+import React, { useContext, useState } from "react"
+import { Spin, Upload } from "antd"
 import { observer } from "mobx-react-lite"
 import { InboxOutlined } from "@ant-design/icons"
 import styles from "./FileExplorer.module.sass"
@@ -13,13 +13,16 @@ const { ipcRenderer } = window.require("electron")
 
 const FileExplorer = observer(() => {
   const { bookStore } = useContext(StoreContext)
+  const [isDecompress, setDecompress] = useState(false)
   let folder = null
   const archivesPath = []
   const pagesPath = []
   const decompressAllArchivesAndAddImages = () => {
     setTimeout(async () => {
       const unzipDest = `${os.tmpdir()}${path.sep}avocado-desktop`
+      setDecompress(true)
       const paths = await ipcRenderer.invoke("unzip", archivesPath, unzipDest)
+      setDecompress(false)
       for (const path of paths) {
         addImageToBook(path)
       }
@@ -52,22 +55,24 @@ const FileExplorer = observer(() => {
   }
 
   return (
-    <Upload.Dragger
-      showUploadList={false}
-      customRequest={({ onSuccess }) => {
-        onSuccess()
-      }}
-      directory
-      multiple
-      onChange={onChange}
-    >
-      <p>
-        <InboxOutlined className={styles.icon} />
-      </p>
-      <p>
-        Click or drag file
-      </p>
-    </Upload.Dragger>
+    <Spin spinning={isDecompress} tip="Opening...">
+      <Upload.Dragger
+        showUploadList={false}
+        customRequest={({ onSuccess }) => {
+          onSuccess()
+        }}
+        directory
+        multiple
+        onChange={onChange}
+      >
+        <p>
+          <InboxOutlined className={styles.icon} />
+        </p>
+        <p>
+          Click or drag file
+        </p>
+      </Upload.Dragger>
+    </Spin>
   )
 })
 
