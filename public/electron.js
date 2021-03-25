@@ -2,7 +2,11 @@ const electron = require("electron")
 const app = electron.app
 const BrowserWindow = electron.BrowserWindow
 const path = require("path")
+const fs = require("fs")
 const isDev = require("electron-is-dev")
+const extract = require("extract-zip")
+const { ipcMain } = require("electron")
+
 let mainWindow
 
 function createWindow() {
@@ -13,11 +17,11 @@ function createWindow() {
     webPreferences: {
       // God, forgive me
       webSecurity: false,
+      nodeIntegration: true,
       allowRunningInsecureContent: false,
-      devTools: isDev,
-    },
+      devTools: isDev
+    }
   })
-  console.log(image.isEmpty())
   mainWindow.openDevTools()
   mainWindow.maximize()
   mainWindow.loadURL(
@@ -37,12 +41,24 @@ app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
     app.quit()
   }
-  console.log(__dirname)
 })
 app.on("activate", () => {
-  console.log(__dirname)
-
   if (mainWindow === null) {
     createWindow()
   }
+})
+
+ipcMain.handle("unzip", async (event, sources, dest) => {
+  const files = []
+  for (const source of sources) {
+    await extract(source, {
+      dir: dest, onEntry: (entry) => {
+        const imagePath = `${dest}${path.sep}${entry.fileName}`
+        if (fs.lstatSync(imagePath).isFile()) {
+          files.push(imagePath)
+        }
+      }
+    })
+  }
+  return files
 })
