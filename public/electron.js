@@ -2,6 +2,7 @@ const electron = require("electron")
 const app = electron.app
 const BrowserWindow = electron.BrowserWindow
 const path = require("path")
+const fs = require("fs")
 const isDev = require("electron-is-dev")
 const extract = require("extract-zip")
 const { ipcMain } = require("electron")
@@ -17,8 +18,6 @@ function createWindow() {
       // God, forgive me
       webSecurity: false,
       nodeIntegration: true,
-      nodeIntegrationInWorker: true,
-      enableRemoteModule: true,
       allowRunningInsecureContent: false,
       devTools: isDev
     }
@@ -49,17 +48,17 @@ app.on("activate", () => {
   }
 })
 
-ipcMain.handle("unzip", async (event, source, dest) => {
+ipcMain.handle("unzip", async (event, sources, dest) => {
   const files = []
-  try {
+  for (const source of sources) {
     await extract(source, {
       dir: dest, onEntry: (entry) => {
-        files.push(entry.fileName)
+        const imagePath = `${dest}${path.sep}${entry.fileName}`
+        if (fs.lstatSync(imagePath).isFile()) {
+          files.push(imagePath)
+        }
       }
     })
-    return files
-  } catch (e) {
-    console.error(e)
-    return false
   }
+  return files
 })

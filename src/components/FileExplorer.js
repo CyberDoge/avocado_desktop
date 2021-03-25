@@ -14,35 +14,40 @@ const { ipcRenderer } = window.require("electron")
 const FileExplorer = observer(() => {
   const { bookStore } = useContext(StoreContext)
   let folder = null
-  let filePaths = []
+  const archivesPath = []
+  const pagesPath = []
+  const decompressAllArchivesAndAddImages = () => {
+    setTimeout(async () => {
+      const unzipDest = `${os.tmpdir()}${path.sep}avocado-desktop`
+      const paths = await ipcRenderer.invoke("unzip", archivesPath, unzipDest)
+      for (const path of paths) {
+        addImageToBook(path)
+      }
+    })
+  }
+  const addImageToBook = (imagePath) => {
+    if (!folder) {
+      folder = imagePath
+      setTimeout(() => {
+        bookStore.openBook(folder, pagesPath)
+      })
+    }
+    pagesPath.push(path.normalize(`file://${imagePath}`))
+    folder = samePathBegin(folder, imagePath)
+  }
   // todo corner case if drag and drop folder with files macrotask run immediately
-  const onChange = async (info) => {
+  const onChange = (info) => {
     const { status, originFileObj, type } = info.file
     if (status !== "done") {
       return
     }
-    if (!folder) {
-      folder = originFileObj.path
-      setTimeout(() => {
-        bookStore.openBook(folder, filePaths)
-      }, 10000)
-    }
     if (type === "application/zip") {
-      const zipSource = originFileObj.path
-      const unzipDest = `${os.tmpdir()}${path.sep}avocado-desktop`
-      const files = await ipcRenderer.invoke("unzip", zipSource, unzipDest)
-      if (!files) {
-        return
+      archivesPath.push(originFileObj.path)
+      if (archivesPath.length === 1) {
+        decompressAllArchivesAndAddImages()
       }
-      filePaths = filePaths.concat(
-        files.map(file =>
-          path.normalize(`file://${unzipDest}${path.sep}${file}`)
-        )
-      )
-      folder = unzipDest
     } else {
-      filePaths.push(path.normalize(`file://${originFileObj.path}`))
-      folder = samePathBegin(folder, originFileObj.path)
+      addImageToBook(originFileObj.path)
     }
   }
 
@@ -59,12 +64,8 @@ const FileExplorer = observer(() => {
       <p>
         <InboxOutlined className={styles.icon} />
       </p>
-      <p className="ant-upload-text">
-        Click or drag file to this area to upload
-      </p>
-      <p className="ant-upload-hint">
-        Support for a single or bulk upload. Strictly prohibit from uploading
-        company data or other band files
+      <p>
+        Click or drag file
       </p>
     </Upload.Dragger>
   )
