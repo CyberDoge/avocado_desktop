@@ -5,20 +5,18 @@ import PageList from "./PageList"
 import { Drawer } from "antd"
 import styles from "./ImageScene.module.sass"
 import { basename } from "path"
-import { useState } from "react"
 import cn from "classnames"
+import useMouseDrag from "../../hooks/useMouseDrag"
 
-const initialMouseCoords = {
-  startPosition: null,
-  minPosition: Number.MAX_SAFE_INTEGER,
-  maxPosition: Number.MIN_SAFE_INTEGER,
-}
 const ImageScene = observer(() => {
   const { bookStore, bookViewerStore } = useContext(StoreContext)
   const onClose = () => {
     bookViewerStore.isDrawerOpen = false
   }
-  const [mouseCoordsX, setMouseCoordsX] = useState({ ...initialMouseCoords })
+  const setClientX = useMouseDrag(()=>{
+    bookViewerStore.isForceShowControl = true
+    return () => bookViewerStore.isForceShowControl = false
+  })
 
   const handleMouseMove = ({ clientX }) => {
     if (!bookViewerStore.isFullScreen) {
@@ -29,25 +27,7 @@ const ImageScene = observer(() => {
     } else if (bookViewerStore.isDrawerOpen && clientX > 300) {
       bookViewerStore.isDrawerOpen = false
     }
-
-    if (mouseCoordsX.startPosition === null) {
-      mouseCoordsX.startPosition = clientX
-
-      setTimeout(() => {
-        if (
-          mouseCoordsX.startPosition - mouseCoordsX.minPosition > 70 &&
-          mouseCoordsX.maxPosition - mouseCoordsX.startPosition > 70
-        ) {
-          bookViewerStore.isForceShowControl = true
-          setTimeout(() => {
-            bookViewerStore.isForceShowControl = false
-          }, 1500)
-        }
-        setMouseCoordsX({ ...initialMouseCoords })
-      }, 700)
-    }
-    mouseCoordsX.minPosition = Math.min(clientX, mouseCoordsX.minPosition)
-    mouseCoordsX.maxPosition = Math.max(clientX, mouseCoordsX.maxPosition)
+    setClientX(clientX)
   }
   return (
     <div className={styles.container} onMouseMove={handleMouseMove}>
