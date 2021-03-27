@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import React, { useContext, useState } from "react"
 import { StoreContext } from "../../store"
 import { observer } from "mobx-react-lite"
 import PageList from "./PageList"
@@ -6,18 +6,13 @@ import { Drawer } from "antd"
 import styles from "./ImageScene.module.sass"
 import { basename } from "path"
 import cn from "classnames"
-import useMouseDrag from "../../hooks/useMouseDrag"
 
 const ImageScene = observer(() => {
   const { bookStore, bookViewerStore } = useContext(StoreContext)
+  const [showControlTimeout, setShowControlTimeout] = useState(0)
   const onClose = () => {
     bookViewerStore.isDrawerOpen = false
   }
-  const setClientX = useMouseDrag(()=>{
-    bookViewerStore.isForceShowControl = true
-    return () => bookViewerStore.isForceShowControl = false
-  })
-
   const handleMouseMove = ({ clientX }) => {
     if (!bookViewerStore.isFullScreen) {
       return
@@ -27,10 +22,25 @@ const ImageScene = observer(() => {
     } else if (bookViewerStore.isDrawerOpen && clientX > 300) {
       bookViewerStore.isDrawerOpen = false
     }
-    setClientX(clientX)
+    const newShowControlTimeout = setTimeout(() => {
+      bookViewerStore.isForceShowControl = false
+    }, 1500)
+    clearTimeout(showControlTimeout)
+    setShowControlTimeout(newShowControlTimeout)
+    bookViewerStore.isForceShowControl = true
+  }
+  const changePage = ({ clientX }) => {
+    if (!bookViewerStore.isFullScreen) {
+      return
+    }
+    if (window.innerWidth / 2 > clientX) {
+      bookStore.currentBook.nextPage()
+    }else {
+      bookStore.currentBook.prevPage()
+    }
   }
   return (
-    <div className={styles.container} onMouseMove={handleMouseMove}>
+    <>
       {bookViewerStore.isFullScreen && (
         <Drawer
           mask={false}
@@ -44,20 +54,26 @@ const ImageScene = observer(() => {
           <PageList />
         </Drawer>
       )}
-      <img
-        onClick={() => {
-          bookViewerStore.isFullScreen && bookStore.currentBook.nextPage()
-        }}
-        draggable={false}
+      <div
         className={cn(
-          bookViewerStore.isFullWidth
-            ? styles.fullWidthPage
-            : styles.fullHeightPage
+          styles.container,
+          !bookViewerStore.isForceShowControl && styles.hideCursor
         )}
-        alt={basename(bookStore.currentBook.currentPage)}
-        src={bookStore.currentBook.currentPage}
-      />
-    </div>
+        onMouseMove={handleMouseMove}
+        onClick={changePage}
+      >
+        <img
+          draggable={false}
+          className={cn(
+            bookViewerStore.isFullWidth
+              ? styles.fullWidthPage
+              : styles.fullHeightPage
+          )}
+          alt={basename(bookStore.currentBook.currentPage)}
+          src={bookStore.currentBook.currentPage}
+        />
+      </div>
+    </>
   )
 })
 

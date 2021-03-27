@@ -9,7 +9,7 @@ import { DownOutlined } from "@ant-design/icons"
 const PageList = observer(({ className }) => {
   const {
     bookStore: { currentBook },
-    bookViewerStore,
+    bookViewerStore
   } = useContext(StoreContext)
   const itemRefMap = useRef(new Map())
   useEffect(() => {
@@ -19,7 +19,7 @@ const PageList = observer(({ className }) => {
   }, [
     bookViewerStore.isFullScreen,
     currentBook.currentPageIndex,
-    bookViewerStore.isDrawerOpen,
+    bookViewerStore.isDrawerOpen
   ])
   return (
     <div className={classnames(styles.container, className)}>
@@ -43,7 +43,7 @@ const PageList = observer(({ className }) => {
             <img
               ref={(ref) => {
                 !itemRefMap.current.has(data.index) &&
-                  itemRefMap.current.set(data.index, ref)
+                itemRefMap.current.set(data.index, ref)
               }}
               alt={data.title}
               className={styles.preview}

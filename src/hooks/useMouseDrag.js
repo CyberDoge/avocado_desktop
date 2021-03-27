@@ -36,7 +36,6 @@ const useMouseDragTmp = (callback) => {
   }, [mouseCoordsX.startPosition])
   useEffect(() => {
     if (!mouseCoordsX.startPosition) {
-      console.log("updated")
       mouseCoordsX.startPosition = clientX
     }
   }, [clientX])
