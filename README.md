@@ -7,6 +7,8 @@ Free desktop app comics and manga reader.
 - Theme switching
 - Web version
 - Custom hotkey setup
+- Open previous version
+- Decompress all archive types
 ### Screenshots
 
 ![file select](https://github.com/CyberDoge/avocado_desktop/blob/master/screenshots/file-select.png)
