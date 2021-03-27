@@ -9,13 +9,12 @@ export default function decomposeFilesToToms(rootPath, pagesUrl) {
       .substr(lengthOfProtocol + rootPath.length)
       .split("/")
       .reduce((r, title) => {
-        // todo разобраться как заполняются данные и пихать isLeaf сразу
         if (!r[title]) {
           r[title] = { result: [] }
           r.result.push({
             title,
             children: r[title].result,
-            key: title, // todo key for folder by path
+            key: title,
             path,
             index,
           })

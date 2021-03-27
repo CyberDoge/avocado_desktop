@@ -35,7 +35,7 @@ const ImageScene = observer(() => {
     }
     if (window.innerWidth / 2 > clientX) {
       bookStore.currentBook.nextPage()
-    }else {
+    } else {
       bookStore.currentBook.prevPage()
     }
   }
@@ -57,7 +57,9 @@ const ImageScene = observer(() => {
       <div
         className={cn(
           styles.container,
-          !bookViewerStore.isForceShowControl && styles.hideCursor
+          !bookViewerStore.isForceShowControl &&
+            bookViewerStore.isFullScreen &&
+            styles.hideCursor
         )}
         onMouseMove={handleMouseMove}
         onClick={changePage}

@@ -1,5 +1,0 @@
-vertical scroll
-hide curcor
-* {
-cursor: none;
-}
