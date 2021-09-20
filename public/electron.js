@@ -1,6 +1,7 @@
 const electron = require("electron")
-const app = electron.app
-const BrowserWindow = electron.BrowserWindow
+
+const { app } = electron
+const { BrowserWindow } = electron
 const path = require("path")
 const fs = require("fs")
 const isDev = require("electron-is-dev")
@@ -22,6 +23,7 @@ function createWindow() {
       devTools: isDev
     }
   })
+
   mainWindow.openDevTools()
   mainWindow.maximize()
   mainWindow.loadURL(
@@ -29,6 +31,7 @@ function createWindow() {
       ? "http://localhost:3000"
       : `file://${path.join(__dirname, "../build/index.html")}`
   )
+
   mainWindow.on("closed", () => (mainWindow = null))
   electron.protocol.registerFileProtocol("file", (request, callback) => {
     const pathname = decodeURI(request.url.replace("file:///", ""))
@@ -37,11 +40,13 @@ function createWindow() {
 }
 
 app.on("ready", createWindow)
+
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
     app.quit()
   }
 })
+
 app.on("activate", () => {
   if (mainWindow === null) {
     createWindow()
@@ -50,15 +55,16 @@ app.on("activate", () => {
 
 ipcMain.handle("unzip", async (event, sources, dest) => {
   const files = []
-  for (const source of sources) {
-    await extract(source, {
-      dir: dest, onEntry: (entry) => {
+  sources.forEach((source) => {
+    extract(source, {
+      dir: dest,
+      onEntry: (entry) => {
         const imagePath = `${dest}${path.sep}${entry.fileName}`
         if (fs.lstatSync(imagePath).isFile()) {
           files.push(imagePath)
         }
       }
     })
-  }
+  })
   return files
 })
