@@ -9,6 +9,10 @@ Free desktop app comics and manga reader.
 - Custom hotkey setup
 - Open previous version
 - Decompress all archive types
+- Logging
+- Заменить файловый менеджер
+- Добавить нормальные файловые пути для windows
+-- Show error image if cannot read image
 ### Screenshots
 
 ![file select](https://github.com/CyberDoge/avocado_desktop/blob/master/screenshots/file-select.png)
