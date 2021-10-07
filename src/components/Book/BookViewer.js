@@ -1,15 +1,15 @@
 import React, { useContext, useEffect } from "react"
 import { observer } from "mobx-react-lite"
-import { StoreContext } from "../../store"
-import PageList from "./PageList"
 import { Button, Layout } from "antd"
 import { CloseOutlined, VerticalAlignMiddleOutlined } from "@ant-design/icons"
 import Sider from "antd/es/layout/Sider"
-import styles from "./BookViewer.module.sass"
 import { Content, Header } from "antd/es/layout/layout"
+import { StoreContext } from "store"
+import useHotKeys from "hooks/useHotKeys"
+import styles from "./BookViewer.module.sass"
+import PageList from "./PageList"
 import ImageScene from "./ImageScene"
 import PageController from "./PageControler"
-import useHotKeys from "../../hooks/useHotKeys"
 
 const BookViewer = observer(() => {
   const { bookStore, bookViewerStore } = useContext(StoreContext)
@@ -17,6 +17,7 @@ const BookViewer = observer(() => {
   useEffect(() => {
     document.querySelector("#imageContent").scrollTop = 0
   }, [bookStore.currentBook.currentPageIndex])
+
   return (
     <Layout className={styles.container}>
       <Sider className={styles.leftAside}>
@@ -34,11 +35,9 @@ const BookViewer = observer(() => {
         {!bookViewerStore.isFullScreen && <PageList />}
       </Sider>
       <Content
-        id={"imageContent"}
-        onDoubleClick={(event) =>
-          !bookViewerStore.isFullScreen &&
-          event.currentTarget.requestFullscreen()
-        }
+        id="imageContent"
+        onDoubleClick={(event) => !bookViewerStore.isFullScreen
+          && event.currentTarget.requestFullscreen()}
       >
         <ImageScene />
         <PageController />

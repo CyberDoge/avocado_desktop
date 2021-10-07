@@ -2,11 +2,11 @@ import React, { useContext, useState } from "react"
 import { Spin, Upload } from "antd"
 import { observer } from "mobx-react-lite"
 import { InboxOutlined } from "@ant-design/icons"
-import styles from "./FileExplorer.module.sass"
-import { StoreContext } from "../store"
-import samePathBegin from "../utils/samePathBegin"
+import { StoreContext } from "store"
+import samePathBegin from "utils/samePathBegin"
 import * as path from "path"
 import * as os from "os"
+import styles from "./FileExplorer.module.sass"
 
 // electron does not support module import of node libs
 const { ipcRenderer } = window.require("electron")
@@ -17,17 +17,7 @@ const FileExplorer = observer(() => {
   let folder = null
   const archivesPath = []
   const pagesPath = []
-  const decompressAllArchivesAndAddImages = () => {
-    setTimeout(async () => {
-      const unzipDest = `${os.tmpdir()}${path.sep}avocado-desktop`
-      setDecompress(true)
-      const paths = await ipcRenderer.invoke("unzip", archivesPath, unzipDest)
-      setDecompress(false)
-      for (const path of paths) {
-        addImageToBook(path)
-      }
-    })
-  }
+
   const addImageToBook = (imagePath) => {
     if (!folder) {
       folder = imagePath
@@ -38,6 +28,19 @@ const FileExplorer = observer(() => {
     pagesPath.push(path.normalize(`file://${imagePath}`))
     folder = samePathBegin(folder, imagePath)
   }
+
+  const decompressAllArchivesAndAddImages = () => {
+    setTimeout(async () => {
+      const unzipDest = `${os.tmpdir()}${path.sep}avocado-desktop`
+      setDecompress(true)
+      const paths = await ipcRenderer.invoke("unzip", archivesPath, unzipDest)
+      setDecompress(false)
+      paths.forEach((p) => {
+        addImageToBook(p)
+      })
+    })
+  }
+
   // todo corner case if drag and drop folder with files macrotask run immediately
   const onChange = (info) => {
     const { status, originFileObj, type } = info.file
@@ -68,9 +71,7 @@ const FileExplorer = observer(() => {
         <p>
           <InboxOutlined className={styles.icon} />
         </p>
-        <p>
-          Click or drag file
-        </p>
+        <p>Click or drag file</p>
       </Upload.Dragger>
     </Spin>
   )

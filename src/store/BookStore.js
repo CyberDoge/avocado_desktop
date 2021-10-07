@@ -1,5 +1,5 @@
 import { makeAutoObservable } from "mobx"
-import Book from "../model/Book"
+import Book from "model/Book"
 import { basename } from "path"
 
 class BookStore {

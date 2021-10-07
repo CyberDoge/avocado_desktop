@@ -9,18 +9,21 @@ const initialMouseCoords = {
 const useMouseDragTmp = (callback) => {
   const [mouseCoordsX, setMouseCoordsX] = useState({ ...initialMouseCoords })
   const [clientX, setClientX] = useState(Number.MAX_SAFE_INTEGER)
-  const [resetTimeout, setResetTimeout] = useState(0)
+  const [resetTimeout, setResetTimeout] = useState()
   const [detectDragTimeout, setDetectDragTimeout] = useState(0)
   useEffect(() => {
-    if(!mouseCoordsX.startPosition){
+    if (!mouseCoordsX.startPosition) {
       return
     }
     clearTimeout(detectDragTimeout)
     const newDetectDragTimeout = setTimeout(() => {
-      console.log(mouseCoordsX.startPosition - mouseCoordsX.minPosition, mouseCoordsX.maxPosition - mouseCoordsX.startPosition)
+      console.log(
+        mouseCoordsX.startPosition - mouseCoordsX.minPosition,
+        mouseCoordsX.maxPosition - mouseCoordsX.startPosition
+      )
       if (
-        mouseCoordsX.startPosition - mouseCoordsX.minPosition > 70 &&
-        mouseCoordsX.maxPosition - mouseCoordsX.startPosition > 70
+        mouseCoordsX.startPosition - mouseCoordsX.minPosition > 70
+        && mouseCoordsX.maxPosition - mouseCoordsX.startPosition > 70
       ) {
         const clear = callback()
         clearTimeout(resetTimeout)
@@ -41,6 +44,7 @@ const useMouseDragTmp = (callback) => {
   }, [clientX])
   mouseCoordsX.minPosition = Math.min(clientX, mouseCoordsX.minPosition)
   mouseCoordsX.maxPosition = Math.max(clientX, mouseCoordsX.maxPosition)
+
   return setClientX
 }
 

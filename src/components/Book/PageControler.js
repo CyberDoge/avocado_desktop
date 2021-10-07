@@ -1,5 +1,4 @@
 import React, { useContext } from "react"
-import styles from "./PageController.module.sass"
 import { Button } from "antd"
 import cn from "classnames"
 import {
@@ -7,10 +6,11 @@ import {
   FullscreenExitOutlined,
   LeftOutlined,
   RightOutlined,
-  ShrinkOutlined,
+  ShrinkOutlined
 } from "@ant-design/icons"
-import { StoreContext } from "../../store"
+import { StoreContext } from "store"
 import { observer } from "mobx-react-lite"
+import styles from "./PageController.module.sass"
 
 const PageController = observer(() => {
   const { bookStore, bookViewerStore } = useContext(StoreContext)
@@ -35,16 +35,16 @@ const PageController = observer(() => {
           <Button
             onClick={bookStore.currentBook.prevPage}
             className={styles.pageControlButton}
-            type={"text"}
-            size={"large"}
+            type="text"
+            size="large"
           >
             <LeftOutlined />
           </Button>
           <Button
             onClick={bookStore.currentBook.nextPage}
             className={styles.pageControlButton}
-            type={"text"}
-            size={"large"}
+            type="text"
+            size="large"
           >
             <RightOutlined />
           </Button>
@@ -59,9 +59,9 @@ const PageController = observer(() => {
         </Button>
         <Button
           className={styles.exitFullScreenBtn}
-          onClick={() =>
-            (bookViewerStore.isFullWidth = !bookViewerStore.isFullWidth)
-          }
+          onClick={() => {
+            bookViewerStore.isFullWidth = !bookViewerStore.isFullWidth
+          }}
         >
           {bookViewerStore.isFullWidth ? (
             <ShrinkOutlined />

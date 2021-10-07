@@ -32,7 +32,9 @@ function createWindow() {
       : `file://${path.join(__dirname, "../build/index.html")}`
   )
 
-  mainWindow.on("closed", () => (mainWindow = null))
+  mainWindow.on("closed", () => {
+    mainWindow = null
+  })
   electron.protocol.registerFileProtocol("file", (request, callback) => {
     const pathname = decodeURI(request.url.replace("file:///", ""))
     callback(pathname)
@@ -66,5 +68,6 @@ ipcMain.handle("unzip", async (event, sources, dest) => {
       }
     })
   })
+
   return files
 })

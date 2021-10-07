@@ -1,10 +1,12 @@
 const { dirname } = require("path")
 const slash = require("slash")
+
 export default function samePathBegin(path, source) {
-  path = slash(path)
-  source = slash(source)
-  if (source.startsWith(path)) {
-    return path
+  const slashedPath = slash(path)
+  const slashedSource = slash(source)
+  if (slashedSource.startsWith(slashedPath)) {
+    return slashedPath
   }
-  return samePathBegin(dirname(path), source)
+
+  return samePathBegin(dirname(slashedPath), slashedSource)
 }
