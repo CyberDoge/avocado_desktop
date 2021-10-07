@@ -1,5 +1,6 @@
 {
   "tabWidth": 2,
   "bracketSpacing": true,
-  "semi": false
+  "semi": false,
+  "trailingComma": "none"
 }

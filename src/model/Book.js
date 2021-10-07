@@ -42,16 +42,15 @@ class Book {
     }
     if (Array.isArray(object)) {
       return object.find(this.updateChapter)
-    } else {
-      for (let property in object) {
-        if (
-          object.hasOwnProperty(property) &&
-          typeof object[property] === "object"
-        ) {
-          const res = this.updateChapter(object[property])
-          if (res) {
-            return res
-          }
+    }
+    for (const property in object) {
+      if (
+        object.hasOwnProperty(property)
+        && typeof object[property] === "object"
+      ) {
+        const res = this.updateChapter(object[property])
+        if (res) {
+          return res
         }
       }
     }
