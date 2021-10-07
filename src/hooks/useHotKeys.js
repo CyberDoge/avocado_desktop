@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react"
-import { StoreContext } from "../store"
+import { StoreContext } from "store"
 
 const useHotKeys = () => {
   const { bookStore, bookViewerStore } = useContext(StoreContext)
@@ -17,13 +17,14 @@ const useHotKeys = () => {
       } else if (event.key === "ArrowLeft") {
         bookStore.currentBook.prevPage()
       } else if (
-        event.key === " " &&
-        bookViewerStore.isFullScreen &&
-        !bookViewerStore.isFullWidth
+        event.key === " "
+        && bookViewerStore.isFullScreen
+        && !bookViewerStore.isFullWidth
       ) {
         event.preventDefault()
         if (event.shiftKey) {
           bookStore.currentBook.prevPage()
+
           return
         }
         if (bookStore.currentBook.isLastPage) {
@@ -34,6 +35,7 @@ const useHotKeys = () => {
     }
     document.addEventListener("fullscreenchange", onfullscreenchange)
     window.addEventListener("keydown", onKeyDown)
+
     return () => {
       document.removeEventListener("fullscreenchange", onfullscreenchange)
       window.removeEventListener("keydown", onKeyDown)

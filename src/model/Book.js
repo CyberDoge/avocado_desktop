@@ -1,5 +1,5 @@
 import { makeAutoObservable } from "mobx"
-import decomposeFilesToToms from "../utils/decomposeFilesToToms"
+import decomposeFilesToToms from "utils/decomposeFilesToToms"
 
 class Book {
   constructor(name, path, pagesUrl = []) {
@@ -45,7 +45,7 @@ class Book {
     }
     for (const property in object) {
       if (
-        object.hasOwnProperty(property)
+        Object.prototype.hasOwnProperty.call(object, property)
         && typeof object[property] === "object"
       ) {
         const res = this.updateChapter(object[property])
@@ -58,13 +58,15 @@ class Book {
 
   nextPage = () => {
     if (this.currentPageIndex < this.pagesUrl.length - 1) {
-      ++this.currentPageIndex
+      this.currentPageIndex += 1
     }
     this.currentChapter = this.updateChapter(this.toms)
   }
 
   prevPage = () => {
-    if (this.currentPageIndex !== 0) --this.currentPageIndex
+    if (this.currentPageIndex !== 0) {
+      this.currentPageIndex -= 1
+    }
     this.currentChapter = this.updateChapter(this.toms)
   }
 

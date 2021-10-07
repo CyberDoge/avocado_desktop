@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useRef } from "react"
 import { observer } from "mobx-react-lite"
-import { StoreContext } from "../../store"
+import { StoreContext } from "store"
 import { Tree } from "antd"
 import classnames from "classnames"
-import styles from "./PageList.module.sass"
 import { DownOutlined } from "@ant-design/icons"
+import styles from "./PageList.module.sass"
 
 const PageList = observer(({ className }) => {
   const {
@@ -21,6 +21,7 @@ const PageList = observer(({ className }) => {
     currentBook.currentPageIndex,
     bookViewerStore.isDrawerOpen
   ])
+
   return (
     <div className={classnames(styles.container, className)}>
       <Tree.DirectoryTree
@@ -38,21 +39,19 @@ const PageList = observer(({ className }) => {
             currentBook.openPage(info.node.path)
           }
         }}
-        titleRender={(data) =>
-          data.isLeaf ? (
-            <img
-              ref={(ref) => {
-                !itemRefMap.current.has(data.index) &&
-                itemRefMap.current.set(data.index, ref)
-              }}
-              alt={data.title}
-              className={styles.preview}
-              src={data.path}
-            />
-          ) : (
-            data.title
-          )
-        }
+        titleRender={(data) => (data.isLeaf ? (
+          <img
+            ref={(ref) => {
+              !itemRefMap.current.has(data.index)
+                && itemRefMap.current.set(data.index, ref)
+            }}
+            alt={data.title}
+            className={styles.preview}
+            src={data.path}
+          />
+        ) : (
+          data.title
+        ))}
       />
     </div>
   )

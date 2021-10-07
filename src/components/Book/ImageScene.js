@@ -1,15 +1,15 @@
 import React, { useContext, useState } from "react"
-import { StoreContext } from "../../store"
 import { observer } from "mobx-react-lite"
-import PageList from "./PageList"
 import { Drawer } from "antd"
-import styles from "./ImageScene.module.sass"
 import { basename } from "path"
 import cn from "classnames"
+import { StoreContext } from "store"
+import styles from "./ImageScene.module.sass"
+import PageList from "./PageList"
 
 const ImageScene = observer(() => {
   const { bookStore, bookViewerStore } = useContext(StoreContext)
-  const [showControlTimeout, setShowControlTimeout] = useState(0)
+  const [showControlTimeout, setShowControlTimeout] = useState()
   const onClose = () => {
     bookViewerStore.isDrawerOpen = false
   }
@@ -39,6 +39,7 @@ const ImageScene = observer(() => {
       bookStore.currentBook.prevPage()
     }
   }
+
   return (
     <>
       {bookViewerStore.isFullScreen && (
@@ -57,12 +58,13 @@ const ImageScene = observer(() => {
       <div
         className={cn(
           styles.container,
-          !bookViewerStore.isForceShowControl &&
-            bookViewerStore.isFullScreen &&
-            styles.hideCursor
+          !bookViewerStore.isForceShowControl
+            && bookViewerStore.isFullScreen
+            && styles.hideCursor
         )}
         onMouseMove={handleMouseMove}
         onClick={changePage}
+        role="presentation"
       >
         <img
           draggable={false}

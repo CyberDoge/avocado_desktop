@@ -6,7 +6,21 @@ module.exports = {
     es2021: true,
     node: true
   },
-  extends: ["plugin:react/recommended", "airbnb"],
+  extends: [
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:react/recommended",
+    "plugin:import/recommended",
+    "eslint:recommended",
+    "airbnb"
+  ],
+  settings: {
+    "import/resolver": {
+      node: {
+        paths: ["src"]
+      }
+    }
+  },
   parser: "@babel/eslint-parser",
   parserOptions: {
     ecmaFeatures: {
@@ -22,6 +36,8 @@ module.exports = {
     quotes: ["error", "double"],
     semi: ["error", "never"],
     "comma-dangle": ["error", "never"],
-    "no-underscore-dangle": ["error", { allowAfterThis: true }]
+    "no-underscore-dangle": ["error", { allowAfterThis: true }],
+    "react/jsx-filename-extension": [1, { extensions: [".js", ".jsx"] }],
+    "newline-before-return": "error"
   }
 }
