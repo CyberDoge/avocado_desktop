@@ -42,8 +42,9 @@ const PageList = observer(({ className }) => {
         titleRender={(data) => (data.isLeaf ? (
           <img
             ref={(ref) => {
-              !itemRefMap.current.has(data.index)
-                && itemRefMap.current.set(data.index, ref)
+              if (itemRefMap.current.has(data.index)) {
+                itemRefMap.current.set(data.index, ref)
+              }
             }}
             alt={data.title}
             className={styles.preview}

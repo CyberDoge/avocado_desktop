@@ -2,12 +2,11 @@ import { makeAutoObservable } from "mobx"
 import decomposeFilesToToms from "utils/decomposeFilesToToms"
 
 class Book {
-  constructor(name, path, pagesUrl = []) {
-    this.path = path
+  constructor(name, pagesUrl = []) {
     this.pagesUrl = pagesUrl
     this.name = name
     this.currentPageIndex = 0
-    this._toms = decomposeFilesToToms(path, pagesUrl)
+    this._toms = decomposeFilesToToms(pagesUrl)
     this._currentChapter = this.updateChapter(this.toms)
     makeAutoObservable(this)
   }
@@ -43,6 +42,7 @@ class Book {
     if (Array.isArray(object)) {
       return object.find(this.updateChapter)
     }
+    // eslint-disable-next-line no-restricted-syntax
     for (const property in object) {
       if (
         Object.prototype.hasOwnProperty.call(object, property)
@@ -54,6 +54,8 @@ class Book {
         }
       }
     }
+
+    return []
   }
 
   nextPage = () => {
