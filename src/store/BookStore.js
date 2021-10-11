@@ -18,7 +18,6 @@ class BookStore {
   }
 
   openBook = (path, pages) => {
-    pages.sort()
     this.books.set(path, new Book(basename(path), pages))
     this.currentBookPath = path
   }

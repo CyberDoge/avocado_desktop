@@ -22,7 +22,10 @@ const FileExplorer = observer(() => {
     if (!folder) {
       folder = imagePath
       setTimeout(() => {
-        bookStore.openBook(folder, pagesPath)
+        bookStore.openBook(
+          folder,
+          pagesPath.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
+        )
       })
     }
     pagesPath.push(path.normalize(`file://${imagePath}`))

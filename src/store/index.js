@@ -11,6 +11,8 @@ class RootStore {
   }
 }
 
-export const StoreContext = React.createContext({})
+export const rootStore = new RootStore()
+
+export const StoreContext = React.createContext(rootStore)
 
 export default RootStore

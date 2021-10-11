@@ -42,8 +42,8 @@ class Book {
     if (Array.isArray(object)) {
       return object.find(this.updateChapter)
     }
-    // eslint-disable-next-line no-restricted-syntax
-    for (const property in object) {
+
+    Object.keys(object).some((property) => {
       if (
         Object.prototype.hasOwnProperty.call(object, property)
         && typeof object[property] === "object"
@@ -53,7 +53,9 @@ class Book {
           return res
         }
       }
-    }
+
+      return []
+    })
 
     return []
   }
