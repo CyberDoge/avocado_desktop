@@ -10,9 +10,11 @@ import PageList from "./PageList"
 const ImageScene = observer(() => {
   const { bookStore, bookViewerStore } = useContext(StoreContext)
   const [showControlTimeout, setShowControlTimeout] = useState()
+
   const onClose = () => {
     bookViewerStore.isDrawerOpen = false
   }
+
   const handleMouseMove = ({ clientX }) => {
     if (!bookViewerStore.isFullScreen) {
       return
@@ -29,11 +31,12 @@ const ImageScene = observer(() => {
     setShowControlTimeout(newShowControlTimeout)
     bookViewerStore.isForceShowControl = true
   }
+
   const changePage = ({ clientX }) => {
     if (!bookViewerStore.isFullScreen) {
       return
     }
-    if (window.innerWidth / 2 > clientX) {
+    if (window.innerWidth / 2 < clientX) {
       bookStore.currentBook.nextPage()
     } else {
       bookStore.currentBook.prevPage()

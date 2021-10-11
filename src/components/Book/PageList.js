@@ -18,7 +18,9 @@ const PageList = observer(() => {
 
   useEffect(() => {
     if (bookViewerStore.isFullScreen && bookViewerStore.isDrawerOpen) {
-      itemRefMap.current.get(currentBook.currentPageIndex)?.scrollIntoView()
+      itemRefMap.current
+        .get(currentBook.currentPageIndex)
+        ?.scrollIntoView(false)
     }
   }, [
     bookViewerStore.isFullScreen,
