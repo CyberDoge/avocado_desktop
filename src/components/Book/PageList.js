@@ -18,7 +18,7 @@ const PageList = observer(() => {
 
   useEffect(() => {
     if (bookViewerStore.isFullScreen && bookViewerStore.isDrawerOpen) {
-      itemRefMap.current.get(currentBook.currentPageIndex).scrollIntoView()
+      itemRefMap.current.get(currentBook.currentPageIndex)?.scrollIntoView()
     }
   }, [
     bookViewerStore.isFullScreen,
@@ -52,9 +52,7 @@ const PageList = observer(() => {
         titleRender={(data) => (data.isLeaf ? (
           <img
             ref={(ref) => {
-              if (!itemRefMap.current.has(data.index)) {
-                itemRefMap.current.set(data.index, ref)
-              }
+              itemRefMap.current.set(data.index, ref)
             }}
             alt={data.title}
             className={styles.preview}
