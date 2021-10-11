@@ -98,7 +98,7 @@
     "release": "yarn react-build && electron-builder --publish=always",
     "build": "yarn react-build && yarn electron-build",
     "start": "concurrently \"cross-env BROWSER=none yarn react-start\" \"wait-on http://localhost:3000 && yarn electron-start --remote-debugging-port=9222\"",
-    "electron-start": "electron . --inspect=9223"
+    "electron-start": "electron ."
   },
   "build": {
     "appId": "io.cyber_doge.avocado",

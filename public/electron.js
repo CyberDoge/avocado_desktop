@@ -57,17 +57,17 @@ app.on("activate", () => {
 
 ipcMain.handle("unzip", async (event, sources, dest) => {
   const files = []
-  sources.forEach((source) => {
-    extract(source, {
-      dir: dest,
-      onEntry: (entry) => {
-        const imagePath = `${dest}${path.sep}${entry.fileName}`
-        if (fs.lstatSync(imagePath).isFile()) {
-          files.push(imagePath)
+  async function unzipAll() {
+    await Promise.all(
+      sources.map((source) => extract(source, {
+        dir: path.join(dest, path.basename(source)),
+        onEntry: (entry) => {
+          files.push(path.join(dest, path.basename(source), entry.fileName))
         }
-      }
-    })
-  })
+      }))
+    )
+  }
+  await unzipAll()
 
   return files
 })
